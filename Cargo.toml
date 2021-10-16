@@ -1,0 +1,7 @@
+[package]
+name = "ttc-rs"
+description = "An implementation of the Teeny Tiny Compiler in Rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]

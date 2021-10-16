@@ -1,0 +1,15 @@
+PRINT "Enter the number whose factorial you wish to calculate"
+INPUT nums
+PRINT ""
+
+LET f = 1
+LET n = nums
+WHILE n > 0 REPEAT
+  LET f = f * n
+  LET n = n - 1
+ENDWHILE
+
+PRINT "Factorial of: "
+PRINT nums
+PRINT " = "
+PRINT f
