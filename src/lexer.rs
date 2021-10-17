@@ -40,7 +40,7 @@ impl Lexer {
     }
 
     fn abort(&self, message: &str) {
-        eprintln!("Lexer error: {}", message);
+        panic!("Lexer error: {}", message);
     }
 
     fn skip_whitespace(&mut self) {
@@ -192,7 +192,7 @@ impl Lexer {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Token {
     pub kind: TokenType,
     pub spelling: String,
@@ -211,34 +211,35 @@ impl Token {
     }
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum TokenType {
-    Eof,
-    Newline,
-    Number,
-    Ident,
-    String,
-    Plus,
-    Minus,
     Asterisk,
-    Slash,
-    Lt,
-    Lte,
+    Endif,
+    Endwhile,
+    Eof,
+    Eq,
+    EqEq,
+    Goto,
     Gt,
     Gte,
-    Eq,
-    NotEq,
-    EqEq,
-    Let,
+    Ident,
     If,
-    Then,
-    Endif,
-    While,
-    Repeat,
-    Endwhile,
-    Label,
-    Goto,
     Input,
+    Label,
+    Let,
+    Lt,
+    Lte,
+    Minus,
+    Newline,
+    NotEq,
+    Number,
+    Plus,
+    Print,
+    Repeat,
+    Slash,
+    String,
+    Then,
+    While,
 }
 
 impl TokenType {
@@ -254,6 +255,7 @@ impl TokenType {
             "REPEAT" => TokenType::Repeat,
             "THEN" => TokenType::Then,
             "WHILE" => TokenType::While,
+            "PRINT" => TokenType::Print,
             _ => TokenType::Ident,
         }
     }
@@ -261,7 +263,7 @@ impl TokenType {
 
 #[cfg(test)]
 mod test {
-    use crate::lexer::{Lexer, Token, TokenType};
+    use crate::lexer::{Lexer, TokenType};
 
     #[test]
     fn test_tokenize() {
@@ -277,7 +279,7 @@ mod test {
 
     fn read_source(infile: &str) -> String {
         use std::fs::File;
-        use std::io::{BufReader, Read, Write};
+        use std::io::{BufReader, Read};
 
         let mut reader = BufReader::new(File::open(infile).unwrap());
         let mut buffer = String::new();
